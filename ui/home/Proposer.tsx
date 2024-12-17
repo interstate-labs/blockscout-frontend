@@ -23,9 +23,8 @@ function Proposer() {
                 "http://135.181.191.125:58017/api/v1/proposers/lookahead?activeOnly=true&futureOnly=true"
             );
     
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
+        
+            console.log("response",response);
     
             const data :any= await response.json();
     
