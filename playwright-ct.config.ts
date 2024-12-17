@@ -3,6 +3,8 @@ import { devices, defineConfig } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { PluginOption } from 'vite';
+
 
 import appConfig from 'configs/app';
 
@@ -50,11 +52,9 @@ const config: PlaywrightTestConfig = defineConfig({
 
     ctViteConfig: {
       plugins: [
-        tsconfigPaths({ loose: true, ignoreConfigErrors: true }),
+        tsconfigPaths({ loose: true, ignoreConfigErrors: true }) as any, // type cast
         react(),
-        svgr({
-          exportAsDefault: true,
-        }),
+        svgr({ exportAsDefault: true })
       ],
       build: {
         // it actually frees some memory that vite needs a lot

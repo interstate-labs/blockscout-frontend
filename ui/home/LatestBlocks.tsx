@@ -19,6 +19,7 @@ import { HOMEPAGE_STATS } from 'stubs/stats';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
+import Proposer from './Proposer';
 
 const LatestBlocks = () => {
   const isMobile = useIsMobile();
@@ -96,7 +97,8 @@ const LatestBlocks = () => {
   }
 
   return (
-    <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
+    <Box width={{ base: '100%', lg: '100%' }} flexShrink={ 0 } style={{flexDirection:'column'}}>
+      <Proposer  />
       <Heading as="h4" size="sm">Latest blocks</Heading>
       { statsQueryResult.data?.network_utilization_percentage !== undefined && (
         <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } mt={ 1 } display="inline-block">

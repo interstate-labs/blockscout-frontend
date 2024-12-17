@@ -36,7 +36,7 @@ const Home = () => {
         <ChainIndicators/>
       </Flex>
       <AdBanner mt={ 6 } mx="auto" display={{ base: 'flex', lg: 'none' }} justifyContent="center"/>
-      <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 6 }>
+      <Flex mt={ 8 } direction={{ base: 'column', lg: 'column' }} columnGap={ 12 } rowGap={ 6 }>
         { leftWidget }
         <Box flexGrow={ 1 }>
           <Transactions/>
