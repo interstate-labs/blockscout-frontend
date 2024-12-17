@@ -1,0 +1,60 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
+import type { QueryKey, UseInfiniteQueryResult, UseInfiniteQueryOptions } from '@tanstack/react-query';
+
+import type { PaginatedResources, ResourceError, ResourcePayload } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
+import type { Params as ApiFetchParams } from 'lib/api/useApiFetch';
+
+import { getResourceKey } from './useApiQuery';
+
+type TQueryData<R extends PaginatedResources> = ResourcePayload<R>;
+type TError = ResourceError<unknown>;
+type TPageParam<R extends PaginatedResources> = ApiFetchParams<R>['queryParams'] | null;
+
+export interface Params<R extends PaginatedResources> {
+  resourceName: R;
+  // eslint-disable-next-line max-len
+  queryOptions?: Omit<
+    UseInfiniteQueryOptions<
+      TQueryData<R>,
+      TError,
+      TQueryData<R>,
+      TQueryData<R>,
+      QueryKey,
+      TPageParam<R>
+    >,
+    'queryKey' | 'queryFn' | 'getNextPageParam' | 'initialPageParam'
+  >;
+  pathParams?: ApiFetchParams<R>['pathParams'];
+}
+
+type ReturnType<Resource extends PaginatedResources> = UseInfiniteQueryResult<
+  TQueryData<Resource>,
+  TError
+>;
+
+export default function useApiInfiniteQuery<R extends PaginatedResources>({
+  resourceName,
+  queryOptions,
+  pathParams,
+}: Params<R>): ReturnType<R> {
+  const apiFetch = useApiFetch();
+
+  return useInfiniteQuery<TQueryData<R>, TError, TQueryData<R>, QueryKey, TPageParam<R>>({
+    queryKey: getResourceKey(resourceName, { pathParams }),
+    queryFn: (context) => {
+      const queryParams =
+        'pageParam' in context ? (context.pageParam || undefined) : undefined;
+      return apiFetch(resourceName, { pathParams, queryParams }) as Promise<TQueryData<R>>;
+    },
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => {
+      // Type narrowing to safely access `next_page_params`
+      if ('next_page_params' in lastPage) {
+        return (lastPage as { next_page_params: TPageParam<R> }).next_page_params;
+      }
+      return null; // Handle cases where `next_page_params` does not exist
+    },
+    ...queryOptions,
+  });
+}
