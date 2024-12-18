@@ -1,54 +1,90 @@
+import { useColorMode, Text, Box, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { FC } from 'react';
+
+
 interface Proposer {
   slot: number;
   validator_index: number;
-  // Add other fields as necessary
 }
+
 
 interface ProposersProps {
   proposers: Proposer[];
-
 }
+
 
 interface ProposerItemProps {
   item: Proposer;
 }
 
-export const Proposers = ({ proposers }: ProposersProps) => {
+
+export const Proposers: FC<ProposersProps> = ({ proposers }) => {
+  const { colorMode } = useColorMode();
+  
+  const textColor = colorMode === 'light' ? 'black' : 'white';
+
+
+
   return (
     <>
-      <h2 style={{color:"black"}}>
+
+      <Text color={textColor} mb={4}>
         Total Proposers In Upcoming 32 Slots: <span className="count">{proposers.length}</span>
-      </h2>
-      <div className="proposer-section">
-        <table>
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Slot</th>
-              <th>Validator Index</th>
-              <th>Insurance Size</th>
-              <th>Total Value Transacted</th>
-            </tr>
-          </thead>
-          <tbody>
-            {proposers.map((proposer, index) => (
-              <ProposerItem key={index} item={proposer} />
+      </Text>
+      
+
+      <Box
+        className="proposer-section"
+        bg={colorMode === 'light' ? 'gray.50' : 'gray.700'} 
+        p={4}
+        borderRadius="md"
+        overflowX="auto"
+      >
+        <Table variant="simple"> 
+          <Thead>
+            <Tr>
+
+              <Th color="white">Type</Th>
+              <Th color="white">Slot</Th>
+              <Th color="white">Validator Index</Th>
+              <Th color="white">Insurance Size</Th>
+              <Th color="white">Total Value Transacted</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+
+            {proposers.map((proposer) => (
+              <ProposerItem key={proposer.slot} item={proposer} colorMode={colorMode} />
             ))}
-          </tbody>
-        </table>
-      </div>
+          </Tbody>
+        </Table>
+      </Box>
     </>
   );
 };
 
-export const ProposerItem = ({ item }: ProposerItemProps) => {
+
+interface ProposerItemPropsWithColorMode extends ProposerItemProps {
+  colorMode: 'light' | 'dark';
+}
+
+
+export const ProposerItem: FC<ProposerItemPropsWithColorMode> = ({ item, colorMode }) => {
+  const textColor = colorMode === 'light' ? 'black' : 'white';
+  
   return (
-    <tr className="bolt">
-      <td>Agg</td>
-      <td>{item.slot}</td>
-      <td>{item.validator_index}</td>
-      <td>_</td>
-      <td>_</td>
-    </tr>
+    <Tr
+      className="bolt"
+      bg={colorMode === 'light' ? 'white' : 'gray.800'} 
+      _hover={{
+        bg: colorMode === 'light' ? 'gray.100' : 'gray.600',
+      }} 
+    >
+      <Td color={textColor}>Agg</Td>
+      <Td color={textColor}>{item.slot}</Td>
+      <Td color={textColor}>{item.validator_index}</Td>
+      <Td color={textColor}>_</Td>
+      <Td color={textColor}>_</Td>
+    </Tr>
   );
 };
