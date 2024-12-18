@@ -16,7 +16,7 @@ interface ProposerItemProps {
 export const Proposers = ({ proposers }: ProposersProps) => {
   return (
     <>
-      <h2 style={{color:"white"}}>
+      <h2 style={{color:"black"}}>
         Total Proposers In Upcoming 32 Slots: <span className="count">{proposers.length}</span>
       </h2>
       <div className="proposer-section">

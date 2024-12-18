@@ -26,7 +26,7 @@ function Proposer() {
         
             console.log("response",response);
     
-            const data :any= await response.json();
+            const data:any= await response.json();
     
             // Ensure the data matches the expected type
             const mappedProposers = data.map((item: any) => ({
@@ -50,10 +50,10 @@ function Proposer() {
 
     return (
         <div className="App" style={{width:"100%"}}>
-            <h1 style={{color:'white'}}>Holesky Proposer Statistics</h1>
-            <h2 style={{color:'white'}}>Available Aggregated Proposers || Last Updated: <span className="count">{timestamp}</span></h2>
-            <h2 style={{color:'white'}}>Average response latency: <span className="count">200ms (est)</span></h2>
-            <h2 style={{color:'white'}}>Total proposers: <span className="count">51,431</span></h2>
+            <h1 style={{color:'black'}}>Holesky Proposer Statistics</h1>
+            <h2 style={{color:'black'}}>Available Aggregated Proposers || Last Updated: <span className="count">{timestamp}</span></h2>
+            <h2 style={{color:'black'}}>Average response latency: <span className="count">200ms (est)</span></h2>
+            <h2 style={{color:'black'}}>Total proposers: <span className="count">51,431</span></h2>
 
             <Proposers proposers={proposers} />
             <Gateway />
